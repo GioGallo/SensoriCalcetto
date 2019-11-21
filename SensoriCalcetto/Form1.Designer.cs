@@ -30,9 +30,13 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmbDifensore1 = new System.Windows.Forms.ComboBox();
+            this.cmbAttaccante1 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cmbAttaccante2 = new System.Windows.Forms.ComboBox();
+            this.cmbDifensore2 = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.btnStart = new System.Windows.Forms.Button();
@@ -49,10 +53,6 @@
             this.lbl = new System.Windows.Forms.Label();
             this.lblPunteggio2 = new System.Windows.Forms.Label();
             this.btnNuovaPartita = new System.Windows.Forms.Button();
-            this.cmbAttaccante1 = new System.Windows.Forms.ComboBox();
-            this.cmbDifensore1 = new System.Windows.Forms.ComboBox();
-            this.cmbDifensore2 = new System.Windows.Forms.ComboBox();
-            this.cmbAttaccante2 = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -78,6 +78,24 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Squadra 1";
+            // 
+            // cmbDifensore1
+            // 
+            this.cmbDifensore1.FormattingEnabled = true;
+            this.cmbDifensore1.Location = new System.Drawing.Point(101, 76);
+            this.cmbDifensore1.Name = "cmbDifensore1";
+            this.cmbDifensore1.Size = new System.Drawing.Size(198, 24);
+            this.cmbDifensore1.TabIndex = 18;
+            this.cmbDifensore1.SelectedIndexChanged += new System.EventHandler(this.CheckPlayers);
+            // 
+            // cmbAttaccante1
+            // 
+            this.cmbAttaccante1.FormattingEnabled = true;
+            this.cmbAttaccante1.Location = new System.Drawing.Point(101, 39);
+            this.cmbAttaccante1.Name = "cmbAttaccante1";
+            this.cmbAttaccante1.Size = new System.Drawing.Size(198, 24);
+            this.cmbAttaccante1.TabIndex = 17;
+            this.cmbAttaccante1.SelectedIndexChanged += new System.EventHandler(this.CheckPlayers);
             // 
             // label3
             // 
@@ -109,6 +127,24 @@
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Squadra 2";
+            // 
+            // cmbAttaccante2
+            // 
+            this.cmbAttaccante2.FormattingEnabled = true;
+            this.cmbAttaccante2.Location = new System.Drawing.Point(16, 39);
+            this.cmbAttaccante2.Name = "cmbAttaccante2";
+            this.cmbAttaccante2.Size = new System.Drawing.Size(198, 24);
+            this.cmbAttaccante2.TabIndex = 19;
+            this.cmbAttaccante2.SelectedIndexChanged += new System.EventHandler(this.CheckPlayers);
+            // 
+            // cmbDifensore2
+            // 
+            this.cmbDifensore2.FormattingEnabled = true;
+            this.cmbDifensore2.Location = new System.Drawing.Point(16, 76);
+            this.cmbDifensore2.Name = "cmbDifensore2";
+            this.cmbDifensore2.Size = new System.Drawing.Size(198, 24);
+            this.cmbDifensore2.TabIndex = 18;
+            this.cmbDifensore2.SelectedIndexChanged += new System.EventHandler(this.CheckPlayers);
             // 
             // label4
             // 
@@ -262,42 +298,7 @@
             this.btnNuovaPartita.TabIndex = 16;
             this.btnNuovaPartita.Text = "NUOVA PARTITA";
             this.btnNuovaPartita.UseVisualStyleBackColor = true;
-            // 
-            // cmbAttaccante1
-            // 
-            this.cmbAttaccante1.FormattingEnabled = true;
-            this.cmbAttaccante1.Location = new System.Drawing.Point(101, 39);
-            this.cmbAttaccante1.Name = "cmbAttaccante1";
-            this.cmbAttaccante1.Size = new System.Drawing.Size(198, 24);
-            this.cmbAttaccante1.TabIndex = 17;
-            this.cmbAttaccante1.SelectedIndexChanged += new System.EventHandler(this.CheckPlayers);
-            // 
-            // cmbDifensore1
-            // 
-            this.cmbDifensore1.FormattingEnabled = true;
-            this.cmbDifensore1.Location = new System.Drawing.Point(101, 76);
-            this.cmbDifensore1.Name = "cmbDifensore1";
-            this.cmbDifensore1.Size = new System.Drawing.Size(198, 24);
-            this.cmbDifensore1.TabIndex = 18;
-            this.cmbDifensore1.SelectedIndexChanged += new System.EventHandler(this.CheckPlayers);
-            // 
-            // cmbDifensore2
-            // 
-            this.cmbDifensore2.FormattingEnabled = true;
-            this.cmbDifensore2.Location = new System.Drawing.Point(16, 76);
-            this.cmbDifensore2.Name = "cmbDifensore2";
-            this.cmbDifensore2.Size = new System.Drawing.Size(198, 24);
-            this.cmbDifensore2.TabIndex = 18;
-            this.cmbDifensore2.SelectedIndexChanged += new System.EventHandler(this.CheckPlayers);
-            // 
-            // cmbAttaccante2
-            // 
-            this.cmbAttaccante2.FormattingEnabled = true;
-            this.cmbAttaccante2.Location = new System.Drawing.Point(16, 39);
-            this.cmbAttaccante2.Name = "cmbAttaccante2";
-            this.cmbAttaccante2.Size = new System.Drawing.Size(198, 24);
-            this.cmbAttaccante2.TabIndex = 19;
-            this.cmbAttaccante2.SelectedIndexChanged += new System.EventHandler(this.CheckPlayers);
+            this.btnNuovaPartita.Click += new System.EventHandler(this.NuovaParttita);
             // 
             // Form1
             // 

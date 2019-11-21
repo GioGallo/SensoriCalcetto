@@ -73,5 +73,40 @@ namespace SensoriCalcetto
                 System.Diagnostics.Debug.WriteLine(e);
             }
         }
+        public void ChangeData(string json, string url)
+        {
+            try
+            {
+                HttpWebRequest httpWebRequestData;
+                httpWebRequestData = (HttpWebRequest)WebRequest.Create(string.Format(url));
+                httpWebRequestData.ContentType = "application/json";
+                httpWebRequestData.Method = "PUT";
+                using (var streamWriter = new StreamWriter(httpWebRequestData.GetRequestStream()))
+                {
+                    try
+                    {
+                        streamWriter.Write(json);
+                        streamWriter.Flush();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+
+                    streamWriter.Close();
+
+                }
+                var httpResponseData = (HttpWebResponse)httpWebRequestData.GetResponse();
+                using (var streamReader = new StreamReader(httpResponseData.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                }
+
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+            }
+        }
     }
 }

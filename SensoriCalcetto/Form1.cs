@@ -13,7 +13,8 @@ namespace SensoriCalcetto
     public partial class Form1 : Form
     {
         private List<Player> lstGiocatori;
-        private int idPartita;
+        private int idPartita,punteggio1=0,punteggio2=0;
+        private int idCalcetto =4;
         Client client = new Client();
         public Form1()
         {
@@ -44,6 +45,8 @@ namespace SensoriCalcetto
             cmbAttaccante2.Enabled = false;
             cmbDifensore1.Enabled = false;
             cmbDifensore2.Enabled = false;
+            string jsonP = "{\"idPartita\":" + idPartita + ",\"idCalcetto\":" + idCalcetto+",\"orario\":"+"\""+DateTime.Now+"\"}";
+            NuovaPartita(jsonP);
             string json = "[{\"idPartita\":"+idPartita+",\"idGiocatore\":"+getIdByName(cmbAttaccante1.Text)+ ",\"ruolo\":\"Attaccante\",\"idSquadra\":1},{\"idPartita\":" + idPartita + ",\"idGiocatore\":" + getIdByName(cmbDifensore1.Text) + ",\"ruolo\":\"Difensore\",\"idSquadra\":1},{\"idPartita\":" + idPartita + ",\"idGiocatore\":" + getIdByName(cmbAttaccante2.Text) + ",\"ruolo\":\"Attaccante\",\"idSquadra\":2},{\"idPartita\":" + idPartita + ",\"idGiocatore\":" + getIdByName(cmbDifensore2.Text) + ",\"ruolo\":\"Difensore\",\"idSquadra\":2}]";
             client.SendData(json, "http://192.168.101.57:3000/giocatore");
             ShowComponents(true);
@@ -66,6 +69,7 @@ namespace SensoriCalcetto
                 btnStart.Enabled = false;
             }
         }
+
 
         private void ShowComponents(bool show)
         {
@@ -90,58 +94,102 @@ namespace SensoriCalcetto
         private void Gol(string json)
         {
             client.SendData(json, "http://192.168.101.57:3000/evento/gol");
+            if(punteggio1 ==10 || punteggio2==10)
+            {
+                string risultato = "{\"risultatoSq1\":"+punteggio1+",\"risultatoSq2\":"+punteggio2+"}";
+                client.ChangeData(risultato, "http://192.168.101.57:3000/partita/"+idPartita);
+                Endgame();
+            }
+        }
+        private void Endgame()
+        {
+            btnGol1.Visible = false;
+            btnRollataAtt1.Visible = false;
+            btnRollataDif1.Visible = false;
+            btnGol2.Visible = false;
+            btnRollataAtt2.Visible = false;
+            btnRollataDif2.Visible = false;
+            btnGolMancato1.Visible = false;
+            btnGolMancato2.Visible = false;
         }
         private void Rollata(string json)
         {
-            client.SendData(json,"http://192.168.101.57:3000/evento/rollata");
+            client.SendData(json,"http://192.168.101.57:3000/evento/rullata");
         }
-
+        private void NuovaPartita(string json)
+        {
+            client.SendData(json, "http://192.168.101.57:3000/partita");
+        }
+        private void NuovaParttita(object sender, EventArgs e)
+        {
+            punteggio1 = 0;
+            punteggio2 = 0;
+            btnStart.Enabled = true;
+            cmbAttaccante1.Enabled = true;
+            cmbAttaccante2.Enabled = true;
+            cmbDifensore1.Enabled = true;
+            cmbDifensore2.Enabled = true;
+            lblPunteggio1.Visible = false;
+            lblRisultato.Visible = false;
+            lblPunteggio2.Visible = false;
+            lblPunteggio1.Text = punteggio1.ToString();
+            lblPunteggio2.Text = punteggio2.ToString(); ;
+            btnNuovaPartita.Visible = false;
+        }
         private void btnGol1_Click(object sender, EventArgs e)
         {
-            string json = "{\"gol\":true,\"idSquadra\":1,\"idPartita\":"+idPartita+"}";
+            string json = "{\"gol\":true,\"idSquadra\":1,\"idPartita\":"+idPartita+",\"orario\":"+"\""+DateTime.Now+"\"}";
+            punteggio1++;
             Gol(json);
+            lblPunteggio1.Text = punteggio1.ToString();
         }
 
         private void btnGolMancato1_Click(object sender, EventArgs e)
         {
-            string json = "{\"gol\":false,\"idSquadra\":1,\"idPartita\":" + idPartita + "}";
+            string json = "{\"gol\":false,\"idSquadra\":1,\"idPartita\":" + idPartita + ",\"orario\":"+"\""+DateTime.Now+"\"}";
             Gol(json);
         }
 
         private void btnGol2_Click(object sender, EventArgs e)
         {
-            string json = "{\"gol\":true,\"idSquadra\":2,\"idPartita\":" + idPartita + "}";
+            string json = "{\"gol\":true,\"idSquadra\":2,\"idPartita\":" + idPartita + ",\"orario\":" + "\""+DateTime.Now +"\"}";
+            punteggio2++;
             Gol(json);
+            lblPunteggio2.Text = punteggio2.ToString();
         }
 
         private void btnGolMancato2_Click(object sender, EventArgs e)
         {
-            string json = "{\"gol\":false,\"idSquadra\":2,\"idPartita\":" + idPartita + "}";
+            string json = "{\"gol\":false,\"idSquadra\":2,\"idPartita\":" + idPartita + ",\"orario\":"+"\""+DateTime.Now+"\"}";
             Gol(json);
         }
 
         private void btnRollataAtt1_Click(object sender, EventArgs e)
         {
-            string json = "{\"rullata\":true,\"idGiocatore\":"+getIdByName(cmbAttaccante1.Text)+",\"idPartita\":" + idPartita + "}";
+            string json = "{\"rullata\":true,\"idGiocatore\":"+getIdByName(cmbAttaccante1.Text)+",\"idPartita\":" + idPartita + ",\"orario\":"+"\""+DateTime.Now+"\"}";
             Rollata(json);
         }
 
         private void btnRollataDif1_Click(object sender, EventArgs e)
         {
-            string json = "{\"rullata\":true,\"idGiocatore\":" + getIdByName(cmbDifensore1.Text) + ",\"idPartita\":" + idPartita + "}";
+            string json = "{\"rullata\":true,\"idGiocatore\":" + getIdByName(cmbDifensore1.Text) + ",\"idPartita\":" + idPartita + ",\"orario\":"+"\""+DateTime.Now+"\"}";
             Rollata(json);
         }
 
         private void btnRollataAtt2_Click(object sender, EventArgs e)
         {
-            string json = "{\"rullata\":true,\"idGiocatore\":" + getIdByName(cmbAttaccante2.Text) + ",\"idPartita\":" + idPartita + "}";
+            string json = "{\"rullata\":true,\"idGiocatore\":" + getIdByName(cmbAttaccante2.Text) + ",\"idPartita\":" + idPartita + ",\"orario\":"+"\""+DateTime.Now+"\"}";
             Rollata(json);
         }
 
         private void btnRollataDif2_Click(object sender, EventArgs e)
         {
-            string json = "{\"rullata\":true,\"idGiocatore\":" + getIdByName(cmbDifensore2.Text) + ",\"idPartita\":" + idPartita + "}";
+            string json = "{\"rullata\":true,\"idGiocatore\":" + getIdByName(cmbDifensore2.Text) + ",\"idPartita\":" + idPartita + ",\"orario\":"+"\""+DateTime.Now+"\"}";
             Rollata(json);
+        }
+        public  String GetTimestamp( DateTime value)
+        {
+            return value.ToString("yyyyMMddHHmmssfff");
         }
     }
 }
