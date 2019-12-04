@@ -45,10 +45,10 @@ namespace SensoriCalcetto
             cmbAttaccante2.Enabled = false;
             cmbDifensore1.Enabled = false;
             cmbDifensore2.Enabled = false;
-            string jsonP = "{\"idPartita\":" + idPartita + ",\"idCalcetto\":" + idCalcetto+",\"orario\":"+"\""+DateTime.Now+"\"}";
-            NuovaPartita(jsonP);
-            string json = "[{\"idPartita\":"+idPartita+",\"idGiocatore\":"+getIdByName(cmbAttaccante1.Text)+ ",\"ruolo\":\"Attaccante\",\"idSquadra\":1},{\"idPartita\":" + idPartita + ",\"idGiocatore\":" + getIdByName(cmbDifensore1.Text) + ",\"ruolo\":\"Difensore\",\"idSquadra\":1},{\"idPartita\":" + idPartita + ",\"idGiocatore\":" + getIdByName(cmbAttaccante2.Text) + ",\"ruolo\":\"Attaccante\",\"idSquadra\":2},{\"idPartita\":" + idPartita + ",\"idGiocatore\":" + getIdByName(cmbDifensore2.Text) + ",\"ruolo\":\"Difensore\",\"idSquadra\":2}]";
-            client.SendData(json, "http://192.168.101.57:3000/giocatore");
+            string json = "{\"Partita\":{\"idPartita\":" + idPartita + ",\"idCalcetto\":" + idCalcetto+",\"orario\":"+"\""+DateTime.Now+ "\"}, \"Giocatori\": [{\"idPartita\":" + idPartita + ",\"idGiocatore\":" + getIdByName(cmbAttaccante1.Text) + ",\"ruolo\":\"Attaccante\",\"idSquadra\":1},{\"idPartita\":" + idPartita + ",\"idGiocatore\":" + getIdByName(cmbDifensore1.Text) + ",\"ruolo\":\"Difensore\",\"idSquadra\":1},{\"idPartita\":" + idPartita + ",\"idGiocatore\":" + getIdByName(cmbAttaccante2.Text) + ",\"ruolo\":\"Attaccante\",\"idSquadra\":2},{\"idPartita\":" + idPartita + ",\"idGiocatore\":" + getIdByName(cmbDifensore2.Text) + ",\"ruolo\":\"Difensore\",\"idSquadra\":2}]}";
+            NuovaPartita(json);
+            //string json = "[{\"idPartita\":"+idPartita+",\"idGiocatore\":"+getIdByName(cmbAttaccante1.Text)+ ",\"ruolo\":\"Attaccante\",\"idSquadra\":1},{\"idPartita\":" + idPartita + ",\"idGiocatore\":" + getIdByName(cmbDifensore1.Text) + ",\"ruolo\":\"Difensore\",\"idSquadra\":1},{\"idPartita\":" + idPartita + ",\"idGiocatore\":" + getIdByName(cmbAttaccante2.Text) + ",\"ruolo\":\"Attaccante\",\"idSquadra\":2},{\"idPartita\":" + idPartita + ",\"idGiocatore\":" + getIdByName(cmbDifensore2.Text) + ",\"ruolo\":\"Difensore\",\"idSquadra\":2}]";
+            //client.SendData(json, "localhost", "calcetto/giocatore"); //http://192.168.101.57:3000/giocatore
             ShowComponents(true);
             btnStart.Enabled = false;
         }
@@ -93,11 +93,12 @@ namespace SensoriCalcetto
         }
         private void Gol(string json)
         {
-            client.SendData(json, "http://192.168.101.57:3000/evento/gol");
-            if(punteggio1 ==10 || punteggio2==10)
+            client.SendData(json, "localhost", "calcetto/evento/gol"); //http://192.168.101.57:3000/evento/gol
+            if (punteggio1 ==10 || punteggio2==10)
             {
-                string risultato = "{\"risultatoSq1\":"+punteggio1+",\"risultatoSq2\":"+punteggio2+"}";
-                client.ChangeData(risultato, "http://192.168.101.57:3000/partita/"+idPartita);
+                string risultato = "{\"Partita\": {\"risultatoSq1\":"+punteggio1+",\"risultatoSq2\":"+punteggio2+"}, \"Id\": " + idPartita + "}";
+                //client.ChangeData(risultato, "localhost", "calcetto/modificaPartita", idPartita); //"http://192.168.101.57:3000/partita/"+idPartita
+                client.SendData(risultato, "localhost", "calcetto/modificaPartita");
                 Endgame();
             }
         }
@@ -114,11 +115,11 @@ namespace SensoriCalcetto
         }
         private void Rollata(string json)
         {
-            client.SendData(json,"http://192.168.101.57:3000/evento/rullata");
+            client.SendData(json,"localhost", "calcetto/evento/rullata"); //http://192.168.101.57:3000/evento/rullata
         }
         private void NuovaPartita(string json)
         {
-            client.SendData(json, "http://192.168.101.57:3000/partita");
+            client.SendData(json,"localhost", "calcetto/nuovaPartita"); //http://192.168.101.57:3000/partita"
         }
         private void NuovaParttita(object sender, EventArgs e)
         {
