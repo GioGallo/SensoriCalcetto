@@ -16,12 +16,22 @@ namespace SensoriCalcetto
         private int idPartita,punteggio1=0,punteggio2=0;
         private int idCalcetto =4;
         Client client = new Client();
+        List<string> lstNomi;
         public Form1()
         {
             InitializeComponent();
             btnStart.Enabled = false;
-            lstGiocatori = client.GetPlayers();
-            List<string> lstNomi = nomiGiocatori(lstGiocatori);
+            try
+            {
+                lstGiocatori = client.GetPlayers();
+                lstNomi = nomiGiocatori(lstGiocatori);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Impossibile raggiungere le api");
+                System.Environment.Exit(1);
+                Console.WriteLine(e.StackTrace);
+            }
             cmbAttaccante1.DataSource = new BindingSource(lstNomi, string.Empty);
             cmbAttaccante2.DataSource = new BindingSource(lstNomi, string.Empty);
             cmbDifensore1.DataSource = new BindingSource(lstNomi, string.Empty);
@@ -93,12 +103,12 @@ namespace SensoriCalcetto
         }
         private void Gol(string json)
         {
-            client.SendData(json, "localhost", "calcetto/evento/gol"); //http://192.168.101.57:3000/evento/gol
+            client.SendData(json,"calcetto/evento/gol"); //http://192.168.101.57:3000/evento/gol
             if (punteggio1 ==10 || punteggio2==10)
             {
                 string risultato = "{\"Partita\": {\"risultatoSq1\":"+punteggio1+",\"risultatoSq2\":"+punteggio2+"}, \"Id\": " + idPartita + "}";
                 //client.ChangeData(risultato, "localhost", "calcetto/modificaPartita", idPartita); //"http://192.168.101.57:3000/partita/"+idPartita
-                client.SendData(risultato, "localhost", "calcetto/modificaPartita");
+                client.SendData(risultato,"calcetto/modificaPartita");
                 Endgame();
             }
         }
@@ -115,11 +125,11 @@ namespace SensoriCalcetto
         }
         private void Rollata(string json)
         {
-            client.SendData(json,"localhost", "calcetto/evento/rullata"); //http://192.168.101.57:3000/evento/rullata
+            client.SendData(json,"calcetto/evento/rullata"); //http://192.168.101.57:3000/evento/rullata
         }
         private void NuovaPartita(string json)
         {
-            client.SendData(json,"localhost", "calcetto/nuovaPartita"); //http://192.168.101.57:3000/partita"
+            client.SendData(json, "calcetto/nuovaPartita"); //http://192.168.101.57:3000/partita"
         }
         private void NuovaParttita(object sender, EventArgs e)
         {

@@ -8,16 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
+using System.Configuration;
 
 namespace SensoriCalcetto
 {
     class Client
     {
+        string ipMqtt = new AppSettingsReader().GetValue("IPMQTT", typeof(string)).ToString();
+        string urlApi = new AppSettingsReader().GetValue("URLAPI", typeof(string)).ToString();
         public List<Player> GetPlayers()
         {
             try
             {
-                HttpWebRequest WebReq = (HttpWebRequest)WebRequest.Create(string.Format("http://192.168.101.57:3000/giocatore"));
+                HttpWebRequest WebReq = (HttpWebRequest)WebRequest.Create(string.Format(urlApi+"/giocatore"));
 
                 WebReq.Method = "GET";
 
@@ -40,9 +43,9 @@ namespace SensoriCalcetto
             return null;
         }
 
-        public void SendData(string json,string url, string topic)
+        public void SendData(string json, string topic)
         {
-            MqttClient client = new MqttClient(url);
+            MqttClient client = new MqttClient(ipMqtt);
             string clientId = Guid.NewGuid().ToString();
 
             try
