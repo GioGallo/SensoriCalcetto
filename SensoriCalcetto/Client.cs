@@ -16,6 +16,7 @@ namespace SensoriCalcetto
     {
         string ipMqtt = new AppSettingsReader().GetValue("IPMQTT", typeof(string)).ToString();
         string urlApi = new AppSettingsReader().GetValue("URLAPI", typeof(string)).ToString();
+        string clientId = new AppSettingsReader().GetValue("CLIENTID", typeof(string)).ToString();
         public List<Player> GetPlayers()
         {
             try
@@ -46,7 +47,7 @@ namespace SensoriCalcetto
         public void SendData(string json, string topic)
         {
             MqttClient client = new MqttClient(ipMqtt);
-            string clientId = Guid.NewGuid().ToString();
+
 
             try
             {

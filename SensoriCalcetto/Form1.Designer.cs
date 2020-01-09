@@ -95,6 +95,7 @@
             this.cmbAttaccante1.Name = "cmbAttaccante1";
             this.cmbAttaccante1.Size = new System.Drawing.Size(198, 24);
             this.cmbAttaccante1.TabIndex = 17;
+            this.cmbAttaccante1.Text = " ";
             this.cmbAttaccante1.SelectedIndexChanged += new System.EventHandler(this.CheckPlayers);
             // 
             // label3
